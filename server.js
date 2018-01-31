@@ -48,17 +48,44 @@
 
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+
+app.use((req, res, next)=>{
+    console.log("Im Middleware function");
+    next();
+})
+app.use('/my',express.static('images'));
+app.use('/personal',express.static('public'));
+
+
+let validate = (req, res, next)=>{
+    if(req.query.name == 'Naveen'){
+        next()
+    }else{
+        res.send("Unauthorised User")
+    }
+}
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
 
 app.get('/', (req, res)=>{
+    console.log('ajsdhka')
     res.send('<h1>Welcome to Express</h1>');
 })
 
-app.get('/aboutus', (req, res)=>{
-    res.send("<h1>About Us page</h1>")
+app.get('/welcome', validate,(req, res)=>{
+    console.log(req.headers);
+    res.send("Welcome to Dashboard")
 })
 
-app.get('/contactus', (req, res)=>{
-    res.send('<h1>Contact Us Page</h1>')
+app.get('/travelling/:from/:to', (req, res)=>{
+    res.send(`Travelling from : ${req.params.from} to ${req.params.to}`)
+})
+
+app.post('/formdata', (req, res)=>{
+    console.log(req.body)
+    res.send(req.body);
 })
 
 app.listen(8080, ()=>{
