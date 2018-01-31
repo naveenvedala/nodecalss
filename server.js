@@ -49,11 +49,13 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const ejs = require('ejs');
 
 app.use((req, res, next)=>{
     console.log("Im Middleware function");
     next();
 })
+app.set('view engine', 'ejs');
 app.use('/my',express.static('images'));
 app.use('/personal',express.static('public'));
 
@@ -66,17 +68,18 @@ let validate = (req, res, next)=>{
     }
 }
 
+//app.use(validate);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
-app.get('/', (req, res)=>{
-    console.log('ajsdhka')
-    res.send('<h1>Welcome to Express</h1>');
+app.get('/home', (req, res)=>{
+    res.render('index',{data:{heading:req.query.name}});
 })
 
-app.get('/welcome', validate,(req, res)=>{
-    console.log(req.headers);
-    res.send("Welcome to Dashboard")
+app.get('/welcome', validate, (req, res)=>{
+    let name = req.query.name;
+    res.send(`Welcome  " ${name}  " to Dashboard`);
 })
 
 app.get('/travelling/:from/:to', (req, res)=>{
