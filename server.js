@@ -50,6 +50,10 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
+const basic = require('./routes/basic');
+
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://root:root@ds125388.mlab.com:25388/class');
 
 app.use((req, res, next)=>{
     console.log("Im Middleware function");
@@ -70,26 +74,14 @@ let validate = (req, res, next)=>{
 
 //app.use(validate);
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
-app.get('/home', (req, res)=>{
-    res.render('index',{data:{heading:req.query.name}});
-})
+app.use('/',basic);
 
-app.get('/welcome', validate, (req, res)=>{
-    let name = req.query.name;
-    res.send(`Welcome  " ${name}  " to Dashboard`);
-})
 
-app.get('/travelling/:from/:to', (req, res)=>{
-    res.send(`Travelling from : ${req.params.from} to ${req.params.to}`)
-})
 
-app.post('/formdata', (req, res)=>{
-    console.log(req.body)
-    res.send(req.body);
-})
 
 app.listen(8080, ()=>{
     console.log('Server Started on Port 8080');
