@@ -17,7 +17,11 @@ router.get('/travelling/:from/:to', (req, res)=>{
 })
 
 router.get('/registration', (req, res)=>{
-    res.render('registration');
+	if(!req.session.user){
+    	res.render('registration');
+	}else{
+		res.redirect('/dashboard');
+	}
 })
 
 router.post('/registration', (req, res)=>{
@@ -40,11 +44,29 @@ router.post('/login', (req, res)=>{
 	user.find({email:req.body.Email, password:req.body.Password}, (err, info)=>{
 		if(err) res.send(err)
 			if(info){
-				res.send(`Hi ${info.username}, Welcome to Dashboard`)
+				console.log(info)
+				req.session.user = info[0];
+				console.log(req.session.user);
+				res.send(`Hi ${info[0].username}, Welcome to Dashboard`)
 			}else{
 				res.send("User Not Found" + info)
 			}
 	})	
+});
+
+router.get('/dashboard', (req, res)=>{
+	if(!req.session.user){
+		res.redirect('/registration');
+	}else{
+		res.send(`Hi, ${req.session.user.username}, Welcome to Dashboard`);
+	}
+	
 })
 
+
+router.get('/logout', (req, res)=>{
+	req.session.destroy(function(err) {
+  res.send('Logged out')
+	})
+})
 module.exports = router;

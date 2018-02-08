@@ -51,6 +51,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const basic = require('./routes/basic');
+const session = require('express-session');
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://root:root@ds125388.mlab.com:25388/class');
@@ -59,6 +60,14 @@ app.use((req, res, next)=>{
     console.log("Im Middleware function");
     next();
 })
+//Session
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge:600000 }
+}));
+
 app.set('view engine', 'ejs');
 app.use('/my',express.static('images'));
 app.use('/personal',express.static('public'));
