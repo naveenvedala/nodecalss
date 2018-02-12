@@ -60,6 +60,7 @@ app.use((req, res, next)=>{
     console.log("Im Middleware function");
     next();
 })
+
 //Session
 app.use(session({
   secret: 'keyboard cat',
