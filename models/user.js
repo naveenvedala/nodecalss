@@ -6,7 +6,8 @@ let User = new Schema({
     username: String,
     password: {type: String, required: true},
     email : {type:String, required:true, unique:true},
-    mobile: {type: Number, unique: true}
+    mobile: {type: Number, unique: true},
+    profile: String
 });
 
 let userdetails = mongoose.model('user', User);

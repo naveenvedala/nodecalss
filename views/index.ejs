@@ -7,9 +7,11 @@
     <title>EJS</title>
 </head>
 <body>
-    <% for(i=0;i<5;i++){ %> 
-            <h1> <%= data.heading %> </h1>
-   <% } %>
-    
+    <h1><%= data.username %> </h1>
+    <img src=<%= data.profile %>>
+    <form action="/profile" method="post" enctype="multipart/form-data">
+    <input type="file" name="photo" multiple/>
+    <input type="submit" name="submit" placeholder="Submit"/>
+    </form>
 </body>
 </html>

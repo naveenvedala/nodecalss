@@ -54,7 +54,7 @@ const basic = require('./routes/basic');
 const session = require('express-session');
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://root:root@ds125388.mlab.com:25388/class');
+mongoose.connect('mongodb://localhost:27017/nodeClass');
 
 app.use((req, res, next)=>{
     console.log("Im Middleware function");
@@ -70,7 +70,7 @@ app.use(session({
 }));
 
 app.set('view engine', 'ejs');
-app.use('/my',express.static('images'));
+app.use('/images',express.static('images'));
 app.use('/personal',express.static('public'));
 
 
